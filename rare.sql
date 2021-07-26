@@ -91,6 +91,6 @@ VALUES (
         "https://i.pravatar.cc/150?u=steve",
         1627318439512,
         1
-    )
+    );
 SELECT *
 FROM Users;
