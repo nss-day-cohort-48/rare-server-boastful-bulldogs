@@ -2,6 +2,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from users import (get_all_users, get_single_user)
 from posts import get_all_posts, get_single_post
+from login import login_auth
+
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -25,6 +27,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         else:
             id = None
+
 
             try:
                 id = int(path_params[2])
@@ -92,10 +95,19 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         self.wfile.write(response.encode())
 
+#         Args:
+#             status (number): the status code to return to the front end
+#         """
+#         self.send_response(status)
+#         self.send_header('Content-type', 'application/json')
+#         self.send_header('Access-Control-Allow-Origin', '*')
+#         self.end_headers()
+
     # def do_POST(self):  # function
     #     """handles the POST function"""
     #     self._set_headers(201)
     #     content_len = int(self.headers.get('content-length', 0))
+
 
     #     post_body = self.rfile.read(content_len)
 
@@ -107,9 +119,30 @@ class HandleRequests(BaseHTTPRequestHandler):
     #     new_post = None
     #     new_comment = None
 
+#         if len(parsed) == 2:
+#             ( resource, id ) = parsed
+
+    def do_POST(self):  # function
+        """handles the POST function"""
+        self._set_headers(201)
+        content_len = int(self.headers.get('content-length', 0))
+
+        post_body = self.rfile.read(content_len)
+
+        post_body = json.loads(post_body)
+
+        (resource, _) = self.parse_url(self.path)
+
+        # new_user = None
+    #     new_post = None
+    #     new_comment = None
+        if resource == "login":
+            user_login = login_auth(post_body['email'], post_body['password'])
+            self.wfile.write(f"{user_login}".encode())
     #     if resource == "users":
     #         new_user = create_user(post_body)
-
+    #     if resource == "users":
+    #         new_user = create_user(post_body)
     #     if resource == "posts":
     #         new_post = create_post(post_body)
 
