@@ -1,7 +1,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from users import (get_all_users, get_single_user, create_user)
-
+from posts import get_all_posts, get_single_post
+from login import login_auth
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Controls the functionality of any GET, PUT, POST, DELETE requests to the server
@@ -24,6 +25,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         else:
             id = None
+
 
             try:
                 id = int(path_params[2])
@@ -51,9 +53,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                         'GET, POST, PUT, DELETE')
+                        'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                         'X-Requested-With, Content-Type, Accept')
+                        'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     def do_GET(self):
@@ -71,12 +73,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_user(id)}"
                 else:
                     response = f"{get_all_users()}"
-
-            # elif resource == "stringInURL":
-            #     if id is not None:
-            #         response = f"{method(id)}"
-            #     else:
-            #         response = f"{method()}"
+            elif resource == "posts":
+                if id is not None:
+                    response = f"{get_single_post(id)}"
+                else:
+                    response = f"{get_all_posts()}"
 
         # elif len(parsed) == 3:
         #     (resource, key, value) = parsed
@@ -98,6 +99,21 @@ class HandleRequests(BaseHTTPRequestHandler):
         content_len = int(self.headers.get('content-length', 0))
 
         post_body = self.rfile.read(content_len)
+#         Args:
+#             status (number): the status code to return to the front end
+#         """
+#         self.send_response(status)
+#         self.send_header('Content-type', 'application/json')
+#         self.send_header('Access-Control-Allow-Origin', '*')
+#         self.end_headers()
+
+    # def do_POST(self):  # function
+    #     """handles the POST function"""
+    #     self._set_headers(201)
+    #     content_len = int(self.headers.get('content-length', 0))
+
+
+    #     post_body = self.rfile.read(content_len)
 
         post_body = json.loads(post_body)
 
@@ -109,15 +125,11 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "register":
             new_user = create_user(post_body)
+        if resource == "login":
+            user_login = login_auth(post_body['email'], post_body['password'])
+            self.wfile.write(f"{user_login}".encode())
 
         self.wfile.write(f"{new_user}".encode())
-
-
-        # if resource == "posts":
-        #     new_post = create_post(post_body)
-
-        # if resource == "comments":
-        #     new_comment = create_comment(post_body)
 
     # def do_PUT(self):
     #     """handles the PUT requests"""

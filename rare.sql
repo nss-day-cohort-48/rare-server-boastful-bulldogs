@@ -1,3 +1,5 @@
+DROP TABLE Posts;
+
 CREATE TABLE "Users" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "first_name" varchar,
@@ -34,7 +36,9 @@ CREATE TABLE "Posts" (
     "publication_date" date,
     "image_url" varchar,
     "content" varchar,
-    "approved" bit
+    "approved" bit,
+    FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
+    FOREIGN KEY(`category_id`) REFERENCES `Categories`(`id`)
 );
 CREATE TABLE "Comments" (
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -108,3 +112,26 @@ VALUES (
         1627318439091,
         0
     );
+
+INSERT INTO Posts
+VALUES (
+    null,
+    1,
+    1,
+    "Fires raging in the PNW",
+    1627408353185,
+    "https://static01.nyt.com/images/2017/09/10/us/10XP-oregon1_xp/06oregon1_xp-jumbo.jpg?quality=90&auto=webp",
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    1
+);
+INSERT INTO Posts
+VALUES (
+    null,
+    1,
+    1,
+    "Olympians are winning Gold!",
+    1627412440128,
+    "https://epmgaa.media.clients.ellingtoncms.com/img/photos/2020/04/09/simonebiles_t580.jpg?8f1b5874916776826eb17d7e67de7278c987ca33",
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    1
+);
