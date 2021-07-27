@@ -1,6 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from users import (get_all_users, get_single_user)
+from posts import get_all_posts, get_single_post
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -51,9 +52,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                         'GET, POST, PUT, DELETE')
+                        'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                         'X-Requested-With, Content-Type, Accept')
+                        'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     def do_GET(self):
@@ -71,12 +72,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_user(id)}"
                 else:
                     response = f"{get_all_users()}"
-
-            # elif resource == "stringInURL":
-            #     if id is not None:
-            #         response = f"{method(id)}"
-            #     else:
-            #         response = f"{method()}"
+            elif resource == "posts":
+                if id is not None:
+                    response = f"{get_single_post(id)}"
+                else:
+                    response = f"{get_all_posts()}"
 
         # elif len(parsed) == 3:
         #     (resource, key, value) = parsed
