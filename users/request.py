@@ -5,15 +5,11 @@ from models import User
 
 def get_all_users():
 
-    # Open a connection to the database
-
     with sqlite3.connect("./Rare.db") as conn:
 
-        # Just use these. It's a Black Box.
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
-        # Write the SQL query to get the information you want
         db_cursor.execute(
             """
         SELECT
@@ -31,19 +27,12 @@ def get_all_users():
         """
         )
 
-        # Initialize an empty list to hold all user representations
         users = []
 
-        # Convert rows of data into a Python list
         dataset = db_cursor.fetchall()
 
-        # Iterate list of data returned from database
         for row in dataset:
 
-            # Create an user instance from the current row.
-            # Note that the database fields are specified in
-            # exact order of the parameters defined in the
-            # user class above.
             user = User(row["id"], row["first_name"],
                         row["last_name"], row["email"], row["bio"],
                         row["username"], row["password"],
@@ -51,11 +40,7 @@ def get_all_users():
 
             users.append(user.__dict__)
 
-    # Use `json` package to properly serialize list as JSON
     return json.dumps(users)
-
-
-# Function with a single parameter
 
 
 def get_single_user(id):
@@ -84,10 +69,8 @@ def get_single_user(id):
             (id,),
         )
 
-        # Load the single result into memory
         data = db_cursor.fetchone()
 
-        # Create an user instance from the current row
         user = User(data["id"], data["first_name"],
                     data["last_name"], data["email"], data["bio"],
                     data["username"], data["password"],
