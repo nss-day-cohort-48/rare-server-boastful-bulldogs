@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from users import (get_all_users, get_single_user)
+from users import (get_all_users, get_single_user, create_user)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -92,29 +92,32 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         self.wfile.write(response.encode())
 
-    # def do_POST(self):  # function
-    #     """handles the POST function"""
-    #     self._set_headers(201)
-    #     content_len = int(self.headers.get('content-length', 0))
+    def do_POST(self):  # function
+        """handles the POST function"""
+        self._set_headers(201)
+        content_len = int(self.headers.get('content-length', 0))
 
-    #     post_body = self.rfile.read(content_len)
+        post_body = self.rfile.read(content_len)
 
-    #     post_body = json.loads(post_body)
+        post_body = json.loads(post_body)
 
-    #     (resource, _) = self.parse_url(self.path)
+        (resource, _) = self.parse_url(self.path)
 
-    #     new_user = None
-    #     new_post = None
-    #     new_comment = None
+        new_user = None
+        # new_post = None
+        # new_comment = None
 
-    #     if resource == "users":
-    #         new_user = create_user(post_body)
+        if resource == "register":
+            new_user = create_user(post_body)
 
-    #     if resource == "posts":
-    #         new_post = create_post(post_body)
+        self.wfile.write(f"{new_user}".encode())
 
-    #     if resource == "comments":
-    #         new_comment = create_comment(post_body)
+
+        # if resource == "posts":
+        #     new_post = create_post(post_body)
+
+        # if resource == "comments":
+        #     new_comment = create_comment(post_body)
 
     # def do_PUT(self):
     #     """handles the PUT requests"""
