@@ -94,3 +94,17 @@ VALUES (
     );
 SELECT *
 FROM Users;
+
+INSERT INTO Users
+VALUES (
+        null,
+        "Josh",
+        "Brownie",
+        "josh@nss.com",
+        "Assistant",
+        "josh",
+        "josh",
+        "https://i.pravatar.cc/150?u=steve",
+        1627318439091,
+        0
+    );
