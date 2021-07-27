@@ -1,5 +1,35 @@
+<<<<<<< Updated upstream
 # from http.server import BaseHTTPRequestHandler, HTTPServer
 # import json
+=======
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import json
+from users import (get_all_users, get_single_user)
+from login import login_auth
+
+
+class HandleRequests(BaseHTTPRequestHandler):
+    """Controls the functionality of any GET, PUT, POST, DELETE requests to the server
+    """
+
+    def parse_url(self, path):
+        """parses the URL"""
+        path_params = path.split("/")
+        resource = path_params[1]
+
+        if "?" in resource:
+
+            param = resource.split("?")[1]
+            resource = resource.split("?")[0]
+            pair = param.split("=")
+            key = pair[0]
+            value = pair[1]
+
+            return (resource, key, value)
+
+        else:
+            id = None
+>>>>>>> Stashed changes
 
 # from {module} import {function},
 
@@ -39,6 +69,7 @@
 #         """Sets the status code, Content-Type and Access-Control-Allow-Origin
 #         headers on the response
 
+<<<<<<< Updated upstream
 #         Args:
 #             status (number): the status code to return to the front end
 #         """
@@ -65,6 +96,27 @@
 
 #         if len(parsed) == 2:
 #             ( resource, id ) = parsed
+=======
+    def do_POST(self):  # function
+        """handles the POST function"""
+        self._set_headers(201)
+        content_len = int(self.headers.get('content-length', 0))
+
+        post_body = self.rfile.read(content_len)
+
+        post_body = json.loads(post_body)
+
+        (resource, _) = self.parse_url(self.path)
+
+        # new_user = None
+    #     new_post = None
+    #     new_comment = None
+        if resource == "login":
+            user_login = login_auth(post_body['email'], post_body['password'])
+            self.wfile.write(f"{user_login}".encode())
+    #     if resource == "users":
+    #         new_user = create_user(post_body)
+>>>>>>> Stashed changes
 
 #             if resource == "stringInURL":
 #                 if id is not None:
