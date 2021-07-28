@@ -2,7 +2,9 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from posts import get_all_posts, get_single_post, get_posts_by_user_id
 from users import (get_all_users, get_single_user, create_user)
+from tags import get_all_tags, get_single_tag
 from login import login_auth
+
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Controls the functionality of any GET, PUT, POST, DELETE requests to the server
@@ -25,7 +27,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         else:
             id = None
-
 
             try:
                 id = int(path_params[2])
@@ -53,9 +54,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                        'GET, POST, PUT, DELETE')
+                         'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                        'X-Requested-With, Content-Type, Accept')
+                         'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     def do_GET(self):
@@ -73,12 +74,18 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_posts_by_user_id(id)}"
                 else:
                     response = f"{get_all_users()}"
+
             elif resource == "posts":
                 if id is not None:
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
 
+            elif resource == "tags":
+                if id is not None:
+                    response = f"{get_single_tag(id)}"
+                else:
+                    response = f"{get_all_tags()}"
         # elif len(parsed) == 3:
         #     (resource, key, value) = parsed
 
@@ -111,7 +118,6 @@ class HandleRequests(BaseHTTPRequestHandler):
     #     """handles the POST function"""
     #     self._set_headers(201)
     #     content_len = int(self.headers.get('content-length', 0))
-
 
     #     post_body = self.rfile.read(content_len)
 
