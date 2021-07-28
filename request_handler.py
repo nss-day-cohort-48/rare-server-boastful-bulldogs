@@ -71,7 +71,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if resource == "users":
                 if id is not None:
-                    response = f"{get_posts_by_user_id(id)}"
+                    response = f"{get_single_user(id)}"
                 else:
                     response = f"{get_all_users()}"
 
@@ -80,6 +80,9 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
+            elif resource == "myposts":
+                if id is not None:
+                    response = f"{get_posts_by_user_id(id)}"
 
             elif resource == "tags":
                 if id is not None:
