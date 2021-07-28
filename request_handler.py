@@ -130,8 +130,6 @@ class HandleRequests(BaseHTTPRequestHandler):
             user_login = login_auth(post_body['email'], post_body['password'])
             self.wfile.write(f"{user_login}".encode())
 
-        # self.wfile.write(f"{new_user}".encode())
-
     # def do_PUT(self):
     #     """handles the PUT requests"""
     #     self._set_headers(204)
