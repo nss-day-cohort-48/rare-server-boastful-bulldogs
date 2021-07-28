@@ -125,11 +125,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "register":
             new_user = create_user(post_body)
+            self.wfile.write(f"{new_user}".encode())
         if resource == "login":
             user_login = login_auth(post_body['email'], post_body['password'])
             self.wfile.write(f"{user_login}".encode())
 
-        self.wfile.write(f"{new_user}".encode())
+        # self.wfile.write(f"{new_user}".encode())
 
     # def do_PUT(self):
     #     """handles the PUT requests"""
