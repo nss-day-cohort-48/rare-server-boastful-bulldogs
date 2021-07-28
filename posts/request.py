@@ -94,7 +94,7 @@ def get_single_post(id):
 
 # SQL GET post by User Id
 def get_posts_by_user_id(id):
-    """Return posts by User Id"""
+    """Return a list of posts by User Id"""
     with sqlite3.connect("./rare.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
@@ -118,7 +118,7 @@ def get_posts_by_user_id(id):
             ON u.id = p.user_id
         JOIN Categories c
             ON c.id = p.category_id
-        WHERE u.id = ?
+        WHERE p.user_id = ?
         """, ( id, ))
 
         posts = []
