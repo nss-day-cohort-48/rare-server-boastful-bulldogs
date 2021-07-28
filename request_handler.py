@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from users import (get_all_users, get_single_user)
-from posts import get_all_posts, get_single_post
+from posts import get_all_posts, get_single_post, get_posts_by_user_id
 from login import login_auth
 
 
@@ -72,7 +72,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if resource == "users":
                 if id is not None:
-                    response = f"{get_single_user(id)}"
+                    response = f"{get_posts_by_user_id(id)}"
                 else:
                     response = f"{get_all_users()}"
             elif resource == "posts":
