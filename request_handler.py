@@ -80,17 +80,14 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
-<<<<<<< HEAD
             elif resource == "category":
                 if id is not None: 
                     response = f"{get_posts_by_category_id(id)}"
                 else: 
                     response = f"{get_all_posts()}"
-=======
             elif resource == "myposts":
                 if id is not None:
                     response = f"{get_posts_by_user_id(id)}"
->>>>>>> main
 
         # elif len(parsed) == 3:
         #     (resource, key, value) = parsed
