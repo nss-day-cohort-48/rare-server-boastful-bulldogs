@@ -155,8 +155,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "posts":
             delete_post(id)
-        # if resource == "posts":
-        #     delete_post(id)
+        if resource == "myposts":
+            delete_post(id)
         # if resource == "comments":
         #     delete_comment(id)
 
