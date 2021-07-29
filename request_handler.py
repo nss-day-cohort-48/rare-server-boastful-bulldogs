@@ -1,8 +1,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from posts import get_all_posts, get_single_post, get_posts_by_user_id
-from users import (get_all_users, get_single_user, create_user)
-from tags import get_all_tags, get_single_tag
+from users import get_all_users, get_single_user, create_user
+from tags import get_all_tags, get_single_tag, create_tag
 from login import login_auth
 
 
@@ -131,6 +131,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         new_user = None
         # new_post = None
         # new_comment = None
+        new_tag = None
 
         if resource == "register":
             new_user = create_user(post_body)
@@ -138,6 +139,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "login":
             user_login = login_auth(post_body['email'], post_body['password'])
             self.wfile.write(f"{user_login}".encode())
+        if resource == "tags":
+            new_tag = create_tag(post_body)
+            self.wfile.write(f"{new_tag}".encode())
 
     # def do_PUT(self):
     #     """handles the PUT requests"""
