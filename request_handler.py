@@ -1,9 +1,11 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from posts import get_all_posts, get_single_post, get_posts_by_user_id
-from users import (get_all_users, get_single_user, create_user)
+from users import get_all_users, get_single_user, create_user
+from tags import get_all_tags, get_single_tag, create_tag
 from login import login_auth
 from categories import get_posts_by_category_id
+
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -27,7 +29,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         else:
             id = None
-
 
             try:
                 id = int(path_params[2])
@@ -55,9 +56,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                        'GET, POST, PUT, DELETE')
+                         'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                        'X-Requested-With, Content-Type, Accept')
+                         'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     def do_GET(self):
@@ -75,6 +76,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_user(id)}"
                 else:
                     response = f"{get_all_users()}"
+
             elif resource == "posts":
                 if id is not None:
                     response = f"{get_single_post(id)}"
@@ -89,6 +91,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                 if id is not None:
                     response = f"{get_posts_by_user_id(id)}"
 
+            elif resource == "tags":
+                if id is not None:
+                    response = f"{get_single_tag(id)}"
+                else:
+                    response = f"{get_all_tags()}"
         # elif len(parsed) == 3:
         #     (resource, key, value) = parsed
 
@@ -122,7 +129,6 @@ class HandleRequests(BaseHTTPRequestHandler):
     #     self._set_headers(201)
     #     content_len = int(self.headers.get('content-length', 0))
 
-
     #     post_body = self.rfile.read(content_len)
 
         post_body = json.loads(post_body)
@@ -132,6 +138,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         new_user = None
         # new_post = None
         # new_comment = None
+        new_tag = None
 
         if resource == "register":
             new_user = create_user(post_body)
@@ -139,6 +146,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "login":
             user_login = login_auth(post_body['email'], post_body['password'])
             self.wfile.write(f"{user_login}".encode())
+        if resource == "tags":
+            new_tag = create_tag(post_body)
+            self.wfile.write(f"{new_tag}".encode())
 
     # def do_PUT(self):
     #     """handles the PUT requests"""

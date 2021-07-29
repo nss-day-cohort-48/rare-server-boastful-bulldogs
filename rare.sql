@@ -137,3 +137,9 @@ VALUES (
 );
 
 SELECT * FROM Posts
+INSERT INTO Tags ('label')
+VALUES ('React');
+INSERT INTO Tags ('label')
+VALUES ('Python');
+
+SELECT * FROM Tags;
