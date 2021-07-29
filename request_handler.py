@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from posts import get_all_posts, get_single_post, get_posts_by_user_id
+from posts import get_all_posts, get_single_post, get_posts_by_user_id, delete_post
 from users import (get_all_users, get_single_user, create_user)
 from login import login_auth
 
@@ -102,22 +102,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         content_len = int(self.headers.get('content-length', 0))
 
         post_body = self.rfile.read(content_len)
-#         Args:
-#             status (number): the status code to return to the front end
-#         """
-#         self.send_response(status)
-#         self.send_header('Content-type', 'application/json')
-#         self.send_header('Access-Control-Allow-Origin', '*')
-#         self.end_headers()
-
-    # def do_POST(self):  # function
-    #     """handles the POST function"""
-    #     self._set_headers(201)
-    #     content_len = int(self.headers.get('content-length', 0))
-
-
-    #     post_body = self.rfile.read(content_len)
-
+        # Convert JSON string to a Python dictionary
         post_body = json.loads(post_body)
 
         (resource, _) = self.parse_url(self.path)
@@ -151,20 +136,20 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     #     self.wfile.write("".encode())
 
-    # def do_DELETE(self):
-    #     """handles DELETE functionality"""
-    #     self._set_headers(204)
+    def do_DELETE(self):
+        """handles DELETE functionality"""
+        self._set_headers(204)
 
-    #     (resource, id) = self.parse_url(self.path)
+        (resource, id) = self.parse_url(self.path)
 
-    #     if resource == "users":
-    #         delete_user(id)
-    #     if resource == "posts":
-    #         delete_post(id)
-    #     if resource == "comments":
-    #         delete_comment(id)
+        if resource == "posts":
+            delete_post(id)
+        # if resource == "posts":
+        #     delete_post(id)
+        # if resource == "comments":
+        #     delete_comment(id)
 
-    #     self.wfile.write("".encode())
+        self.wfile.write("".encode())
 
 
 def main():

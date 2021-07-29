@@ -140,3 +140,14 @@ def get_posts_by_user_id(id):
             posts.append(post.__dict__)
 
     return json.dumps(posts)
+
+
+def delete_post(id):
+    """Delete a post by Id"""
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        DELETE FROM Posts
+        WHERE id = ?
+        """, ( id, ))
