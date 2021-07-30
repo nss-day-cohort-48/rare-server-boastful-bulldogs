@@ -200,3 +200,15 @@ def update_post(id, new_post):
     else:
         # Forces 204 response by main module
         return True
+
+
+# SQL DELETE POST
+def delete_post(id):
+    """Delete a post by Id"""
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+            DELETE FROM Posts
+            WHERE id = ?
+            """, ( id, ))
