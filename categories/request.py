@@ -115,3 +115,4 @@ def delete_category(id):
             DELETE FROM Categories
             WHERE id = ?
             """, ( id, ))
+            
