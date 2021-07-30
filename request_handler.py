@@ -156,15 +156,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         (resource, id) = self.parse_url(self.path)
 
-        if resource == "posts":
-            delete_post(id)
         if resource == "myposts":
             delete_post(id)
         # if resource == "comments":
         #     delete_comment(id)
 
         self.wfile.write("".encode())
-
 
 def main():
     """Starts the server on port 8088 using the HandleRequests class
