@@ -5,6 +5,7 @@ from users import get_all_users, get_single_user, create_user
 from tags import get_all_tags, get_single_tag, create_tag
 from login import login_auth
 from categories import get_all_categories, get_single_category, create_category
+from comments import create_comment, get_comments_by_post_id
 
 
 
@@ -96,6 +97,9 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_tag(id)}"
                 else:
                     response = f"{get_all_tags()}"
+            elif resource == "comments":
+                if id is not None:
+                    response = f"{get_comments_by_post_id(id)}"
         # elif len(parsed) == 3:
         #     (resource, key, value) = parsed
 
@@ -123,7 +127,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         new_user = None
         new_post = None
-        # new_comment = None
+        new_comment = None
         new_category = None
         new_tag = None
 
@@ -143,6 +147,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "tags":
             new_tag = create_tag(post_body)
             self.wfile.write(f"{new_tag}".encode())
+        if resource == "comments":
+            new_comment = create_comment(post_body)
+            self.wfile.write(f"{new_comment}".encode())
 
     def do_PUT(self):
         """handles the PUT requests"""
