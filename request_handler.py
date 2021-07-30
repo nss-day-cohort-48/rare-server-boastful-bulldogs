@@ -2,11 +2,10 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from posts import get_all_posts, get_single_post, get_posts_by_user_id, delete_post, create_post, update_post
 from users import get_all_users, get_single_user, create_user
-from tags import get_all_tags, get_single_tag, create_tag
+from tags import get_all_tags, get_single_tag, create_tag, delete_tag
 from login import login_auth
 from categories import get_all_categories, get_single_category, create_category
 from comments import create_comment, get_comments_by_post_id
-
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -84,7 +83,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                 else:
                     response = f"{get_all_posts()}"
             elif resource == "categories":
-                if id is not None: 
+                if id is not None:
                     response = f"{get_single_category(id)}"
                 else:
                     response = f"{get_all_categories()}"
@@ -130,7 +129,6 @@ class HandleRequests(BaseHTTPRequestHandler):
         new_comment = None
         new_category = None
         new_tag = None
-
 
         if resource == "register":
             new_user = create_user(post_body)
@@ -180,7 +178,11 @@ class HandleRequests(BaseHTTPRequestHandler):
         # if resource == "comments":
         #     delete_comment(id)
 
+        if resource == "tags":
+            delete_tag(id)
+
         self.wfile.write("".encode())
+
 
 def main():
     """Starts the server on port 8088 using the HandleRequests class
