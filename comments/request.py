@@ -71,3 +71,39 @@ def get_comments_by_post_id(id):
             comments.append(comment.__dict__)
     
     return json.dumps(comments)
+
+def get_all_comments():
+    """Return all comments"""
+    with sqlite3.connect("./rare.db") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        SELECT
+            c.id,
+            c.post_id,
+            c.author_id,
+            c.content,
+            c.created_on,
+            u.first_name user_first_name,
+            u.last_name user_last_name
+        FROM Comments c
+        JOIN Users u
+            ON u.id = c.author_id
+        """)
+
+        comments = []
+
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+            comment = Comment(row['id'], row['post_id'], row['author_id'],
+                    row['content'], row['created_on'])
+            
+            user = User(row['author_id'], row['user_first_name'], row['user_last_name'])
+
+            comment.user = user.__dict__
+
+            comments.append(comment.__dict__)
+    
+    return json.dumps(comments)

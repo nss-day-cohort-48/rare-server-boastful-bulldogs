@@ -5,7 +5,7 @@ from users import get_all_users, get_single_user, create_user
 from tags import get_all_tags, get_single_tag, create_tag, delete_tag
 from login import login_auth
 from categories import get_all_categories, get_single_category, create_category
-from comments import create_comment, get_comments_by_post_id
+from comments import create_comment, get_comments_by_post_id, get_all_comments
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -99,6 +99,8 @@ class HandleRequests(BaseHTTPRequestHandler):
             elif resource == "comments":
                 if id is not None:
                     response = f"{get_comments_by_post_id(id)}"
+                else:
+                    response = f"{get_all_comments()}"
         # elif len(parsed) == 3:
         #     (resource, key, value) = parsed
 
