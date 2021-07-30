@@ -44,6 +44,28 @@ def get_all_posts():
             post.user = user.__dict__
             post.category = category.__dict__
 
+             # Get the owners of the animal by following the relationship from customers to animal
+            # through the join table
+            db_cursor.execute("""
+                Select
+                    t.id,
+                    t.label
+                From Tags t
+                Join TagsPosts tp on t.id = tp.tag_id
+                Join Posts p on p.id = tp.post_id
+                where p.id = ?
+            """, (post.id, ))
+            tags_rows = db_cursor.fetchall()
+            # Loop through the customer_rows to create a dictionary for each customer
+            # then append the customer to the customers list in animal
+            for tags_row in tags_rows:
+                tag = {
+                    'id': tags_row['id'],
+                    'label;': tags_row['label']
+                }
+                post.tags.append(tag)
+
+
             posts.append(post.__dict__)
 
     return json.dumps(posts)
@@ -165,6 +187,17 @@ def create_post(new_post):
         # primary key in the response.
         new_post['id'] = id
 
+                # new_animal['customers']: the client should pass a list of customer_id's
+        # to be associated with this animal
+        for tags in new_post['tags']:
+            # When interating (looping) through the list we can insert the customer_id
+            # and new_animal['id'] into the CustomerAnimal table to set up the
+            # many to many relationship
+            db_cursor.execute("""
+            INSERT INTO TagsPosts
+                (tag_id, post_id)
+            VALUES (?, ?)
+            """, (tags, new_post['id']))
 
     return json.dumps(new_post)
 
