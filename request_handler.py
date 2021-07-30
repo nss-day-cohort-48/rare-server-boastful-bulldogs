@@ -4,6 +4,8 @@ from posts import get_all_posts, get_single_post, get_posts_by_user_id, create_p
 from users import (get_all_users, get_single_user, create_user)
 from tags import get_all_tags, get_single_tag, create_tag
 from login import login_auth
+from categories import get_all_categories, get_single_category, create_category
+
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -80,6 +82,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                     response = f"{get_single_post(id)}"
                 else:
                     response = f"{get_all_posts()}"
+            elif resource == "categories":
+                if id is not None: 
+                    response = f"{get_single_category(id)}"
+                else:
+                    response = f"{get_all_categories()}"
             elif resource == "myposts":
                 if id is not None:
                     response = f"{get_posts_by_user_id(id)}"
@@ -131,7 +138,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         new_user = None
         new_post = None
         # new_comment = None
+        new_category = None
         new_tag = None
+
 
         if resource == "register":
             new_user = create_user(post_body)
@@ -139,6 +148,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == "login":
             user_login = login_auth(post_body['email'], post_body['password'])
             self.wfile.write(f"{user_login}".encode())
+        if resource == "categories":
+            new_tag = create_category(post_body)
+            self.wfile.write(f"{new_category}".encode())
         if resource == "posts":
             new_post = create_post(post_body)
             self.wfile.write(f"{new_post}".encode())

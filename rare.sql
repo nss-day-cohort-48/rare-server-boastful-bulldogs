@@ -136,9 +136,17 @@ VALUES (
     1
 );
 
+SELECT * FROM Posts
 INSERT INTO Tags ('label')
 VALUES ('React');
 INSERT INTO Tags ('label')
 VALUES ('Python');
 
 SELECT * FROM Tags;
+
+INSERT INTO Categories ('label')
+Values ('World News'); 
+INSERT INTO Categories ('label')
+Values ('Sports'); 
+
+SELECT * FROM Categories
