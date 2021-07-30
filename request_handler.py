@@ -1,6 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-from posts import get_all_posts, get_single_post, get_posts_by_user_id, delete_post, create_post
+from posts import get_all_posts, get_single_post, get_posts_by_user_id, delete_post, create_post, update_post
 from users import get_all_users, get_single_user, create_user
 from tags import get_all_tags, get_single_tag, create_tag
 from login import login_auth
@@ -132,23 +132,23 @@ class HandleRequests(BaseHTTPRequestHandler):
             new_tag = create_tag(post_body)
             self.wfile.write(f"{new_tag}".encode())
 
-    # def do_PUT(self):
-    #     """handles the PUT requests"""
-    #     self._set_headers(204)
-    #     content_len = int(self.headers.get('content-length', 0))
-    #     post_body = self.rfile.read(content_len)
-    #     post_body = json.loads(post_body)
+    def do_PUT(self):
+        """handles the PUT requests"""
+        self._set_headers(204)
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
 
-    #     (resource, id) = self.parse_url(self.path)
+        (resource, id) = self.parse_url(self.path)
 
-    #     if resource == "users":
-    #         update_user(id, post_body)
-    #     if resource == "posts":
-    #         update_post(id, post_body)
-    #     if resource == "comments":
-    #         update_comment(id, post_body)
+        # if resource == "users":
+        #     update_user(id, post_body)
+        if resource == "posts":
+            update_post(id, post_body)
+        # if resource == "comments":
+        #     update_comment(id, post_body)
 
-    #     self.wfile.write("".encode())
+        self.wfile.write("".encode())
 
     def do_DELETE(self):
         """handles DELETE functionality"""
