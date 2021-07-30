@@ -105,3 +105,14 @@ def get_posts_by_category_id(id):
         post.category = category.__dict__
 
         return json.dumps(post.__dict__)
+
+def delete_category(id):
+    """Delete a category by Id"""
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+            DELETE FROM Categories
+            WHERE id = ?
+            """, ( id, ))
+            

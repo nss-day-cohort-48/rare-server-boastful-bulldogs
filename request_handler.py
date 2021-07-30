@@ -4,7 +4,8 @@ from posts import get_all_posts, get_single_post, get_posts_by_user_id, delete_p
 from users import get_all_users, get_single_user, create_user
 from tags import get_all_tags, get_single_tag, create_tag, delete_tag
 from login import login_auth
-from categories import get_all_categories, get_single_category, create_category
+from categories import get_all_categories, get_single_category, create_category, delete_category
+
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -168,6 +169,8 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "myposts":
             delete_post(id)
+        if resource == "categories":
+            delete_category(id)
         # if resource == "comments":
         #     delete_comment(id)
 
@@ -175,7 +178,6 @@ class HandleRequests(BaseHTTPRequestHandler):
             delete_tag(id)
 
         self.wfile.write("".encode())
-
 
 def main():
     """Starts the server on port 8088 using the HandleRequests class
