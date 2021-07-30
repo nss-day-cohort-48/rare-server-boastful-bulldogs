@@ -67,3 +67,14 @@ def create_tag(new_tag):
         new_tag['id'] = id
 
     return json.dumps(new_tag)
+
+
+def delete_tag(id):
+    """Delete a post by Id"""
+    with sqlite3.connect("./rare.db") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+            DELETE FROM Tags
+            WHERE id = ?
+            """, (id, ))
